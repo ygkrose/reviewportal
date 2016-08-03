@@ -9,6 +9,13 @@ public partial class _Default : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+        try
+        {
+            Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+        }
+        catch (Exception err)
+        {
+            Response.Write(err.Message);
+        }
     }
 }
