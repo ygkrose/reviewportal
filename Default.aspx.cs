@@ -11,7 +11,7 @@ public partial class _Default : System.Web.UI.Page
     {
         try
         {
-            Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+            //Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
         }
         catch (Exception err)
         {
