@@ -15,6 +15,10 @@ D:\VSProjects\reviewportal\reviewportal\bin\reviewportal.dll
 D:\VSProjects\reviewportal\reviewportal\bin\reviewportal.pdb
 D:\VSProjects\reviewportal\reviewportal\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 D:\VSProjects\reviewportal\reviewportal\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-D:\VSProjects\reviewportal\reviewportal\obj\Debug\reviewportal.csprojResolveAssemblyReference.cache
 D:\VSProjects\reviewportal\reviewportal\obj\Debug\reviewportal.dll
 D:\VSProjects\reviewportal\reviewportal\obj\Debug\reviewportal.pdb
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Bson.dll
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.Core.dll
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.dll
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Bson.xml
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.xml
