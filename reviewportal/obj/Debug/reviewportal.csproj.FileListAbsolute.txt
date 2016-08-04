@@ -22,3 +22,6 @@ D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.Core.dll
 D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.dll
 D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Bson.xml
 D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.xml
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.Legacy.dll
+D:\VSProjects\reviewportal\reviewportal\bin\MongoDB.Driver.Legacy.xml
+D:\VSProjects\reviewportal\reviewportal\obj\Debug\reviewportal.csprojResolveAssemblyReference.cache

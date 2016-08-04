@@ -103,6 +103,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="dbentity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="review.aspx.cs">
       <DependentUpon>review.aspx</DependentUpon>

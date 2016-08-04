@@ -24,7 +24,11 @@ namespace reviewportal
             
             _client = new MongoClient("mongodb://ygkroses:4rfv5tgb@ds033015.mlab.com:33015/acct");
             MongoDatabase _database = _client.GetServer().GetDatabase("acct");
-            
+            MongoCollection<Account> _collection =  _database.GetCollection<Account>("account");
+            _collection.FindAll();
+
+
+
         }
     }
 }
