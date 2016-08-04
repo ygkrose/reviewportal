@@ -27,6 +27,8 @@ namespace reviewportal
             MongoCollection<Account> _collection = null;
             if (ConfigurationManager.AppSettings["MONGOLAB_URI"] == null)
             {
+                //mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv
+                //mongodb://ygkroses:4rfv5tgb@ds033015.mlab.com:33015/acct
                 _client = new MongoClient("mongodb://ygkroses:4rfv5tgb@ds033015.mlab.com:33015/acct");
                 _database = _client.GetServer().GetDatabase("acct");
                 _collection = _database.GetCollection<Account>("account");
@@ -34,6 +36,7 @@ namespace reviewportal
             else
             {
                 _client = new MongoClient(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+                //_client = new MongoClient("mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv");
                 _database = _client.GetServer().GetDatabase("appharbor_f5h26gwv");
                 _collection = _database.GetCollection<Account>("_account");
             }
@@ -52,14 +55,18 @@ namespace reviewportal
         {
             if (e.Row.RowIndex > -1)
             {
-                e.Row.Cells[2].Text = ((Account)e.Row.DataItem).purchase.pdate;
-                e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pitem;
-                e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pcardno;
+                if (((Account)e.Row.DataItem).status == "Blocked")
+                {
+                    e.Row.Cells[1].ForeColor = System.Drawing.Color.Red;
+                }
+                e.Row.Cells[3].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2)+"...";
+                e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
+                e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
+                e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.pcardno;
                 HyperLink hl = new HyperLink();
                 hl.NavigateUrl = "./review.aspx";
-                
                 hl.Text = ((Account)e.Row.DataItem).review.Count.ToString();
-                e.Row.Cells[5].Controls.Add(hl);
+                e.Row.Cells[6].Controls.Add(hl);
             }
             
         }
