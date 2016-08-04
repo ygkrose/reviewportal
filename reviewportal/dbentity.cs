@@ -10,11 +10,12 @@ namespace reviewportal
     {
         public BsonObjectId id { get; }
         public string email { get; set; } = "";
+        public string pwd { get; set; } = "";
         public string status { get; set; } = "";
 
-        public Purchase purchase = null;
+        public Purchase purchase = new Purchase();
 
-        public List<Review> review;
+        public List<Review> review = new List<Review>();
     }
 
     public class Purchase
