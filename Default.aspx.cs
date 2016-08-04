@@ -6,19 +6,19 @@ using MongoDB.Bson;
 
 public partial class _Default : System.Web.UI.Page
 {
-    private MongoClient _client;
+    //private MongoClient _client;
 
     protected void Page_Load(object sender, EventArgs e)
     {
         try
         {
-            //mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv
-             if ( ConfigurationManager.AppSettings["MONGOLAB_URI"] == null)
-                _client = new MongoClient("mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv");
-             else
-                _client = new MongoClient(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
-            //Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
-            bindData();
+            ////mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv
+            // if ( ConfigurationManager.AppSettings["MONGOLAB_URI"] == null)
+            //    _client = new MongoClient("mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv");
+            // else
+            //    _client = new MongoClient(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+            Response.Write(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
+            //bindData();
         }
         catch (Exception err)
         {
