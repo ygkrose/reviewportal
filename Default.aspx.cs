@@ -35,8 +35,8 @@ public partial class _Default : System.Web.UI.Page
         MongoDatabase md = ms.GetDatabase("appharbor_f5h26gwv");
         MongoCollection<account> mongoCollection = md.GetCollection<account>("_account");
         ms.Disconnect();
-        GridView1.DataSource = mongoCollection.FindAll();
-        GridView1.DataBind();
+       // GridView1.DataSource = mongoCollection.FindAll();
+       // GridView1.DataBind();
         //DetailsView1.DataSource = mongoCollection.FindAll();
         //DetailsView1.DataBind();
     }
