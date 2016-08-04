@@ -7,8 +7,6 @@ using MongoDB.Bson;
 public partial class _Default : System.Web.UI.Page
 {
     private MongoClient _client;
-    private IMongoDatabase _database;
-    private IMongoCollection<BsonDocument> _collection;
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -30,11 +28,11 @@ public partial class _Default : System.Web.UI.Page
 
     private void bindData()
     {
-        MongoServer ms = _client.GetServer();
-        ms.Connect();
-        MongoDatabase md = ms.GetDatabase("appharbor_f5h26gwv");
-        MongoCollection<account> mongoCollection = md.GetCollection<account>("_account");
-        ms.Disconnect();
+        //MongoServer ms = _client.GetServer();
+        //ms.Connect();
+        //MongoDatabase md = ms.GetDatabase("appharbor_f5h26gwv");
+        //MongoCollection<account> mongoCollection = md.GetCollection<account>("_account");
+        //ms.Disconnect();
        // GridView1.DataSource = mongoCollection.FindAll();
        // GridView1.DataBind();
         //DetailsView1.DataSource = mongoCollection.FindAll();
