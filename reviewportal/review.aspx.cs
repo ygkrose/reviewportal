@@ -59,7 +59,7 @@ namespace reviewportal
                 {
                     e.Row.Cells[1].ForeColor = System.Drawing.Color.Red;
                 }
-                e.Row.Cells[3].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2)+"...";
+                e.Row.Cells[2].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2)+"...";
                 e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
                 e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.pcardno;
