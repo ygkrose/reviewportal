@@ -45,8 +45,8 @@ namespace reviewportal
             //Parallel.ForEach<Account>(_collection.FindAllAs<Account>(), (_doc)=>{
                 
             //});
-            GridView1.DataSource = _collection.FindAll();
-            GridView1.DataBind();
+            //GridView1.DataSource = _collection.FindAll();
+            //GridView1.DataBind();
 
         }
 

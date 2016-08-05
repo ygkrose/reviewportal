@@ -9,13 +9,18 @@ using MongoDB.Bson;
 using System.Threading.Tasks;
 using System.Data;
 using System.Configuration;
+using MongoDB.Driver.Builders;
+using System.Collections;
 
 namespace reviewportal
 {
     public partial class acct : System.Web.UI.Page
     {
         private MongoClient _client;
+        MongoDatabase _database = null;
+        MongoCollection<Account> _collection = null;
 
+        int rowsPerPage = 200;
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadMongoDB();
@@ -23,8 +28,7 @@ namespace reviewportal
 
         private void LoadMongoDB()
         {
-            MongoDatabase _database = null;
-            MongoCollection<Account> _collection = null;
+           
             if (ConfigurationManager.AppSettings["MONGOLAB_URI"] == null)
             {
                 //mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv
@@ -45,7 +49,7 @@ namespace reviewportal
             //Parallel.ForEach<Account>(_collection.FindAllAs<Account>(), (_doc)=>{
 
             //});
-            GridView1.DataSource = _collection.FindAll();
+            GridView1.DataSource = _collection.FindAll().SetLimit(rowsPerPage);
             GridView1.DataBind();
 
         }
@@ -63,12 +67,52 @@ namespace reviewportal
                 e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
                 e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.pcardno;
+                
                 HyperLink hl = new HyperLink();
-                hl.NavigateUrl = "./review.aspx";
                 hl.Text = ((Account)e.Row.DataItem).review.Count.ToString();
+                if (((Account)e.Row.DataItem).review.Count > 0)
+                {
+                    hl.Attributes.Add("rvdata", ((Account)e.Row.DataItem).review.ToJson());
+                    hl.Attributes.Add("onclick", "openReview('" + ((Account)e.Row.DataItem).review.ToJson() + "')");
+                    hl.NavigateUrl = "#";
+                }
                 e.Row.Cells[6].Controls.Add(hl);
             }
 
+        }
+        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            string sortfield = e.SortExpression;
+            if (sortfield == "pdate")
+                sortfield = "purchase.pdate";
+            else if (sortfield == "pcard")
+                sortfield = "purchase.pcardno";
+            else if (sortfield == "asin")
+                sortfield = "purchase.pitem";
+            else if (sortfield == "rvs")
+                sortfield = "review";
+
+            if (ViewState[e.SortExpression]==null)
+            {
+                ViewState.Add(e.SortExpression, "Asc");
+            }
+            else
+            {
+                if (ViewState[e.SortExpression].ToString() == "Asc")
+                    ViewState[e.SortExpression] = "Desc";
+                else
+                    ViewState[e.SortExpression] = "Asc";
+            }
+            if (ViewState[e.SortExpression].ToString()=="Asc")
+            {
+                GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
+            }
+            else
+            {
+                GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
+            }
+                
+            GridView1.DataBind();
         }
     }
 }
