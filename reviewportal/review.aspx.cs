@@ -18,7 +18,7 @@ namespace reviewportal
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadMongoDB();
+            
         }
 
         private void LoadMongoDB()
