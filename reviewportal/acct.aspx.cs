@@ -66,17 +66,18 @@ namespace reviewportal
                 e.Row.Cells[2].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2) + "...";
                 e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
-                e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.pcardno;
-                
+                e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.ptel;
+                e.Row.Cells[6].Text = ((Account)e.Row.DataItem).purchase.pcardno;
+
                 HyperLink hl = new HyperLink();
                 hl.Text = ((Account)e.Row.DataItem).review.Count.ToString();
                 if (((Account)e.Row.DataItem).review.Count > 0)
                 {
-                    hl.Attributes.Add("rvdata", ((Account)e.Row.DataItem).review.ToJson());
-                    hl.Attributes.Add("onclick", "openReview('" + ((Account)e.Row.DataItem).review.ToJson() + "')");
+                    //hl.Attributes.Add("rvdata", ((Account)e.Row.DataItem).review.ToJson());
+                    hl.Attributes.Add("onclick", "openReview('" + ((Account)e.Row.DataItem).email + "','" + ((Account)e.Row.DataItem).review.ToJson() + "')");
                     hl.NavigateUrl = "#";
                 }
-                e.Row.Cells[6].Controls.Add(hl);
+                e.Row.Cells[7].Controls.Add(hl);
             }
 
         }
@@ -89,6 +90,8 @@ namespace reviewportal
                 sortfield = "purchase.pcardno";
             else if (sortfield == "asin")
                 sortfield = "purchase.pitem";
+            else if (sortfield == "tel")
+                sortfield = "purchase.ptel";
             else if (sortfield == "rvs")
                 sortfield = "review";
 
