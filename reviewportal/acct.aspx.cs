@@ -23,6 +23,12 @@ namespace reviewportal
         int rowsPerPage = 200;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["valid"] == null)
+            {
+                Response.Redirect("./default.aspx");
+                Response.End();
+            }
+
             LoadMongoDB();
         }
 
