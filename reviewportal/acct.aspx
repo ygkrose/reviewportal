@@ -10,7 +10,11 @@
     <script type="text/javascript" src="Scripts/1.10.3/jquery-1.8.2.js"></script>
     <script type="text/javascript" src="Scripts/1.10.3/jquery-ui.js"></script>
     <link href="CSS/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <style type="text/css">.td {padding:3px}</style>
+    <style type="text/css">.td {padding:3px}
+        #vtree {
+            width: 240px;
+        }
+    </style>
     <script type="text/javascript">
     $("#btnShowPopUp").live("click", function () {
         $("#popup").dialog({
@@ -55,8 +59,22 @@
 </script>
 </head>
 <body>
+    <Div style="font-family: &quot;Times New Roman&quot;, Times, serif; font-size: 25px">Welcome Review Portal</Div>
     <form id="form1" runat="server">
-        <div style="align-content: center; padding: 10px">
+        <div id="vtree" style="float:left; height: 116px;padding-right:3px" height: 93px;">
+
+            <asp:TreeView ID="TreeView1" runat="server" Width="239px" Font-Size="Medium" Height="110px" OnSelectedNodeChanged="TreeView1_SelectedNodeChanged" ExpandDepth="0">
+                <Nodes>
+                    <asp:TreeNode Text="Accounts Status" Value="AS"></asp:TreeNode>
+                    <asp:TreeNode Text="Test Result" Value="TR">
+                        <asp:TreeNode Text="1.Same VPN,Same Prod. Review" Value="SVSPR"></asp:TreeNode>
+                    </asp:TreeNode>
+                    <asp:TreeNode Text="Review Outcome" Value="RO"></asp:TreeNode>
+                </Nodes>
+            </asp:TreeView>
+
+        </div>
+        <div style="float:left; width: 726px;" padding: 10px">
 
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" OnSorting="GridView1_Sorting" PageSize="20">
                 <Columns>
@@ -70,6 +88,7 @@
                     <asp:HyperLinkField HeaderText="Reviews" ItemStyle-HorizontalAlign="Center" NavigateUrl="~/review.aspx" Target="_self" SortExpression="rvs">
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:HyperLinkField>
+                    <asp:BoundField DataField="vpn" HeaderText="VPN Name" SortExpression="vpn" />
                 </Columns>
             </asp:GridView>
 

@@ -30,6 +30,7 @@ namespace reviewportal
             }
 
             LoadMongoDB();
+
         }
 
         private void LoadMongoDB()
@@ -50,16 +51,25 @@ namespace reviewportal
                 _database = _client.GetServer().GetDatabase("appharbor_f5h26gwv");
                 _collection = _database.GetCollection<Account>("_account");
             }
+        }
 
-
+        private void doFilter(IMongoQuery filter=null)
+        {
             //Parallel.ForEach<Account>(_collection.FindAllAs<Account>(), (_doc)=>{
 
             //});
-            GridView1.DataSource = _collection.FindAll().SetLimit(rowsPerPage);
+            if (filter == null)
+            {
+                GridView1.DataSource = _collection.FindAll().SetLimit(rowsPerPage);
+            }
+            else
+            {
+                
+                GridView1.DataSource = _collection.Find(filter);
+            }
+            
             GridView1.DataBind();
-
         }
-
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -84,6 +94,7 @@ namespace reviewportal
                     hl.NavigateUrl = "#";
                 }
                 e.Row.Cells[7].Controls.Add(hl);
+                e.Row.Cells[8].Text = ((Account)e.Row.DataItem).vpn;
             }
 
         }
@@ -122,6 +133,23 @@ namespace reviewportal
             }
                 
             GridView1.DataBind();
+        }
+
+        protected void TreeView1_SelectedNodeChanged(object sender, EventArgs e)
+        {
+            string val = (sender as TreeView).SelectedValue.Trim();
+            if (val == "AS")
+            {
+                doFilter();
+            }
+            else if (val == "SVSPR")
+            {
+                doFilter(Query.EQ("vpn","Canada#18"));
+            }
+            else if (val == "RO")
+            {
+
+            }
         }
     }
 }
