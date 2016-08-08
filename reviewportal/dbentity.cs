@@ -18,6 +18,8 @@ namespace reviewportal
         public List<Review> review = new List<Review>();
 
         public string vpn { get; set; } = "";
+
+        public string createdate { get; set; } = "";
     }
 
     public class Purchase

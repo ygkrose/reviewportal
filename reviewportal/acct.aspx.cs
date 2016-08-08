@@ -144,11 +144,11 @@ namespace reviewportal
             }
             else if (val == "SVSPR")
             {
-                doFilter(Query.EQ("vpn","Canada#18"));
+                doFilter(Query.And(Query.EQ("vpn","Canada#18"),Query.Matches("createdate","2016-08-07")));
             }
             else if (val == "RO")
             {
-                doFilter(Query.NE("review.rvitem", ""));
+                doFilter(Query.SizeGreaterThan("review", 0));
             }
         }
     }
