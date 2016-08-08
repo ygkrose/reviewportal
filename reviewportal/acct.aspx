@@ -12,7 +12,7 @@
     <link href="CSS/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <style type="text/css">.td {padding:3px}
         #vtree {
-            width: 240px;
+            width: 260px;
         }
     </style>
     <script type="text/javascript">
@@ -63,7 +63,7 @@
     <form id="form1" runat="server">
         <div id="vtree" style="float:left; height: 116px;padding-right:3px" height: 93px;">
 
-            <asp:TreeView ID="TreeView1" runat="server" Width="239px" Font-Size="Medium" Height="110px" OnSelectedNodeChanged="TreeView1_SelectedNodeChanged" ExpandDepth="0">
+            <asp:TreeView ID="TreeView1" runat="server" Width="239px" Font-Size="Medium" Height="110px" OnSelectedNodeChanged="TreeView1_SelectedNodeChanged">
                 <Nodes>
                     <asp:TreeNode Text="Accounts Status" Value="AS"></asp:TreeNode>
                     <asp:TreeNode Text="Test Result" Value="TR">

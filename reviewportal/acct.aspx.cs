@@ -148,7 +148,7 @@ namespace reviewportal
             }
             else if (val == "RO")
             {
-
+                doFilter(Query.NE("review.rvitem", ""));
             }
         }
     }
