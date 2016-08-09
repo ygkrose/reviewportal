@@ -55,7 +55,7 @@ namespace reviewportal
 
         private void manageCtlStyle()
         {
-            GridView1.AlternatingRowStyle.BackColor = System.Drawing.Color.LightGray;
+            GridView1.AlternatingRowStyle.BackColor = System.Drawing.Color.WhiteSmoke;
         }
 
         private MongoCursor<Account> doFilter(IMongoQuery filter=null)
