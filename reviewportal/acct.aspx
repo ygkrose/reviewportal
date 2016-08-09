@@ -90,6 +90,8 @@
                     </asp:HyperLinkField>
                     <asp:BoundField DataField="vpn" HeaderText="VPN Name" SortExpression="vpn" />
                 </Columns>
+                <EditRowStyle Wrap="False" />
+                <HeaderStyle Wrap="False" />
             </asp:GridView>
 
         </div>
