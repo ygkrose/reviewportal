@@ -30,7 +30,7 @@ namespace reviewportal
             }
 
             LoadMongoDB();
-
+            manageCtlStyle();
         }
 
         private void LoadMongoDB()
@@ -53,22 +53,25 @@ namespace reviewportal
             }
         }
 
-        private void doFilter(IMongoQuery filter=null)
+        private void manageCtlStyle()
+        {
+            GridView1.AlternatingRowStyle.BackColor = System.Drawing.Color.LightGray;
+        }
+
+        private MongoCursor<Account> doFilter(IMongoQuery filter=null)
         {
             //Parallel.ForEach<Account>(_collection.FindAllAs<Account>(), (_doc)=>{
-
             //});
+            MongoCursor<Account> gridsource;
             if (filter == null)
-            {
-                GridView1.DataSource = _collection.FindAll().SetLimit(rowsPerPage);
-            }
+                gridsource = _collection.FindAll().SetLimit(rowsPerPage);
             else
-            {
-                
-                GridView1.DataSource = _collection.Find(filter);
-            }
-            
+                gridsource = _collection.Find(filter);
+
+            GridView1.DataSource = gridsource;
             GridView1.DataBind();
+          
+            return gridsource;
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -125,11 +128,15 @@ namespace reviewportal
             }
             if (ViewState[e.SortExpression].ToString()=="Asc")
             {
-                GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
+                GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
+                //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
+                //GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
             }
             else
             {
-                GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
+                GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
+                //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
+                //GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
             }
                 
             GridView1.DataBind();
@@ -140,15 +147,15 @@ namespace reviewportal
             string val = (sender as TreeView).SelectedValue.Trim();
             if (val == "AS")
             {
-                doFilter();
+                Session["gridsource"] =  doFilter();
             }
             else if (val == "SVSPR")
             {
-                doFilter(Query.And(Query.EQ("vpn","Canada#18"),Query.Matches("createdate","2016-08-07")));
+                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn","Canada#18"),Query.Matches("createdate","2016-08-07")));
             }
             else if (val == "RO")
             {
-                doFilter(Query.SizeGreaterThan("review", 0));
+                Session["gridsource"] = doFilter(Query.SizeGreaterThan("review", 0));
             }
         }
     }

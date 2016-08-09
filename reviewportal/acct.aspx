@@ -76,7 +76,7 @@
         </div>
         <div style="float:left; width: 726px;" padding: 10px">
 
-            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" OnSorting="GridView1_Sorting" PageSize="20">
+            <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" OnSorting="GridView1_Sorting" PageSize="20" BorderStyle="Solid">
                 <Columns>
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
@@ -91,7 +91,8 @@
                     <asp:BoundField DataField="vpn" HeaderText="VPN Name" SortExpression="vpn" />
                 </Columns>
                 <EditRowStyle Wrap="False" />
-                <HeaderStyle Wrap="False" />
+                <HeaderStyle BackColor="#CCCCFF" Wrap="False" />
+                <RowStyle Wrap="False" />
             </asp:GridView>
 
         </div>
