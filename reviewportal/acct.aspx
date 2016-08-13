@@ -19,7 +19,7 @@
     $("#btnShowPopUp").live("click", function () {
         $("#popup").dialog({
             title: "Displaying GridView Data",
-            width:600,
+            width:350,
             buttons: {
             //if you want close button use below code
                 Close: function () {
@@ -29,6 +29,25 @@
         });
         return false;
     });
+    function openCardInfo(cid, allid) {
+        var cardsjson = JSON.parse(allid);
+        $("#popup").empty();
+        $("#popup").dialog({
+            title: " Card Info ",
+            width: 500
+        });
+        mytable = $('<table border="1px"></table>').attr({ id: "cardTable" });
+        $('<th>ID</th><th>Num</th><th>Expired</th><th>Usable</th><th>Balance</th>').appendTo(mytable);
+        for (var i = 0; i < cardsjson.length; i++) {
+            var _row = $('<tr></tr>').appendTo(mytable);
+            $('<td></td>').text(cardsjson[i].cardname).appendTo(_row);
+            $('<td></td>').text(cardsjson[i].CardId).appendTo(_row);
+            $('<td></td>').text(cardsjson[i].bmonth + "/" +cardsjson[i].byear).appendTo(_row);
+            $('<td></td>').text(cardsjson[i].status).appendTo(_row);
+            $('<td align=right></td>').text(cardsjson[i].balance).appendTo(_row);
+        }
+        mytable.appendTo("#popup");
+    }
     function openReview(eid,jrows) {
         var _rows = JSON.parse(jrows);
         $("#popup").empty();
@@ -68,6 +87,7 @@
                     <asp:TreeNode Text="Accounts Status" Value="AS"></asp:TreeNode>
                     <asp:TreeNode Text="Test Result" Value="TR">
                         <asp:TreeNode Text="1.Same VPN,Same Prod. Review" Value="SVSPR"></asp:TreeNode>
+                        <asp:TreeNode Text="2.Shop over $5" Value="SO5"></asp:TreeNode>
                     </asp:TreeNode>
                     <asp:TreeNode Text="Review Outcome" Value="RO"></asp:TreeNode>
                 </Nodes>
@@ -84,7 +104,7 @@
                     <asp:BoundField HeaderText="Purchase Date" SortExpression="pdate" />
                     <asp:BoundField HeaderText="Purchase ASIN" SortExpression="asin" />
                     <asp:BoundField HeaderText="Purchase TEL" SortExpression="tel" />
-                    <asp:BoundField HeaderText="Credit Card" SortExpression="pcard" />
+                    <asp:BoundField HeaderText="Credit Card" SortExpression="pcard"><ItemStyle HorizontalAlign="Center"></ItemStyle></asp:BoundField>
                     <asp:HyperLinkField HeaderText="Reviews" ItemStyle-HorizontalAlign="Center" NavigateUrl="~/review.aspx" Target="_self" SortExpression="rvs">
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:HyperLinkField>

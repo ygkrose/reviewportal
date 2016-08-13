@@ -11,6 +11,7 @@ using System.Data;
 using System.Configuration;
 using MongoDB.Driver.Builders;
 using System.Collections;
+using MongoDB.Bson.IO;
 
 namespace reviewportal
 {
@@ -19,7 +20,8 @@ namespace reviewportal
         private MongoClient _client;
         MongoDatabase _database = null;
         MongoCollection<Account> _collection = null;
-
+        MongoCollection<Cards> _collect_Card = null;
+        private string cardJson = "";
         int rowsPerPage = 200;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,6 +53,13 @@ namespace reviewportal
                 _database = _client.GetServer().GetDatabase("appharbor_f5h26gwv");
                 _collection = _database.GetCollection<Account>("_account");
             }
+
+            _collect_Card = _database.GetCollection<Cards>("card");
+
+            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+
+            cardJson = _collect_Card.FindAllAs<Cards>()
+                .SetFields(Fields.Exclude(new string[2] {"scode", "adddate" })).ToJson(jsonWriterSettings);
         }
 
         private void manageCtlStyle()
@@ -86,7 +95,17 @@ namespace reviewportal
                 e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
                 e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.ptel;
-                e.Row.Cells[6].Text = ((Account)e.Row.DataItem).purchase.pcardno;
+                string _card = ((Account)e.Row.DataItem).purchase.pcardno;
+                if (_card.Length <= 3)
+                {
+                    HyperLink lnk = new HyperLink();
+                    lnk.Text = _card;
+                    lnk.Attributes.Add("onclick", "openCardInfo('" + _card + "','" + cardJson + "')");
+                    lnk.NavigateUrl = "#";
+                    e.Row.Cells[6].Controls.Add(lnk);
+                }
+                else
+                    e.Row.Cells[6].Text = _card;
 
                 HyperLink hl = new HyperLink();
                 hl.Text = ((Account)e.Row.DataItem).review.Count.ToString();
@@ -156,6 +175,10 @@ namespace reviewportal
             else if (val == "RO")
             {
                 Session["gridsource"] = doFilter(Query.SizeGreaterThan("review", 0));
+            }
+            else if (val == "SO5")
+            {
+                Session["gridsource"] = doFilter(Query.EQ("vpn", "Canada#26"));
             }
         }
     }
