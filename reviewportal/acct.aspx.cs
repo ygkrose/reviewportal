@@ -30,11 +30,11 @@ namespace reviewportal
 
             //#if DEBUG
             //#else
-            //if (Session["valid"] == null)
-            //{
-            //    Response.Redirect("./default.aspx");
-            //    Response.End();
-            //}
+            if (Session["valid"] == null)
+            {
+                Response.Redirect("./default.aspx");
+                Response.End();
+            }
             //#endif
             LoadMongoDB();
 
