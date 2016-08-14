@@ -102,7 +102,7 @@
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField HeaderText="PWD" />
-                    <asp:BoundField HeaderText="Purchase Date" SortExpression="pdate" />
+                    <asp:BoundField HeaderText="Purchase Date" SortExpression="pdate" DataFormatString="{0:yyyy/MM/dd HH:mm:ss} " HtmlEncode="False" />
                     <asp:BoundField HeaderText="Purchase ASIN" SortExpression="asin" />
                     <asp:BoundField HeaderText="Purchase TEL" SortExpression="tel" />
                     <asp:BoundField HeaderText="Credit Card" SortExpression="pcard"><ItemStyle HorizontalAlign="Center"></ItemStyle></asp:BoundField>

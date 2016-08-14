@@ -53,21 +53,7 @@ namespace reviewportal
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowIndex > -1)
-            {
-                if (((Account)e.Row.DataItem).status == "Blocked")
-                {
-                    e.Row.Cells[1].ForeColor = System.Drawing.Color.Red;
-                }
-                e.Row.Cells[2].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2)+"...";
-                e.Row.Cells[3].Text = ((Account)e.Row.DataItem).purchase.pdate;
-                e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
-                e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.pcardno;
-                HyperLink hl = new HyperLink();
-                hl.NavigateUrl = "./review.aspx";
-                hl.Text = ((Account)e.Row.DataItem).review.Count.ToString();
-                e.Row.Cells[6].Controls.Add(hl);
-            }
+
             
         }
     }
