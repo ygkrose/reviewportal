@@ -22,22 +22,41 @@ namespace reviewportal
         MongoCollection<Account> _collection = null;
         MongoCollection<Cards> _collect_Card = null;
         private string cardJson = "";
-        int rowsPerPage = 200;
+        int rowsPerPage = 25;
+        int currPage = 0;
+        int totalPages = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["valid"] == null)
-            {
-                Response.Redirect("./default.aspx");
-                Response.End();
-            }
 
+            //#if DEBUG
+            //#else
+            //if (Session["valid"] == null)
+            //{
+            //    Response.Redirect("./default.aspx");
+            //    Response.End();
+            //}
+            //#endif
             LoadMongoDB();
-            manageCtlStyle();
+
+            if (!IsPostBack)
+            {
+                manageCtlStyle();
+                ViewState["currentPage"] = currPage;
+            }
+            else
+            {
+                if (ViewState["cardstring"] != null)
+                {
+                    //_collection = Session["main_collection"] as MongoCollection<Account>;
+                    cardJson = ViewState["cardstring"].ToString();
+                    currPage = (int)ViewState["currentPage"];
+                    totalPages = (int)ViewState["totalpage"];
+                }
+            }
         }
 
         private void LoadMongoDB()
         {
-           
             if (ConfigurationManager.AppSettings["MONGOLAB_URI"] == null)
             {
                 //mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv
@@ -53,34 +72,59 @@ namespace reviewportal
                 _database = _client.GetServer().GetDatabase("appharbor_f5h26gwv");
                 _collection = _database.GetCollection<Account>("_account");
             }
-
             _collect_Card = _database.GetCollection<Cards>("card");
 
-            var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
-
-            cardJson = _collect_Card.FindAllAs<Cards>()
-                .SetFields(Fields.Exclude(new string[2] {"scode", "adddate" })).ToJson(jsonWriterSettings);
         }
 
         private void manageCtlStyle()
         {
             GridView1.AlternatingRowStyle.BackColor = System.Drawing.Color.WhiteSmoke;
+
         }
 
-        private MongoCursor<Account> doFilter(IMongoQuery filter=null)
+        private MongoCursor<Account> doFilter(IMongoQuery filter = null)
         {
+            if (string.IsNullOrEmpty(cardJson))
+            {
+                var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+                cardJson = _collect_Card.FindAllAs<Cards>()
+                    .SetFields(Fields.Exclude(new string[2] { "scode", "adddate" })).ToJson(jsonWriterSettings);
+                ViewState["cardstring"] = cardJson;
+            }
             //Parallel.ForEach<Account>(_collection.FindAllAs<Account>(), (_doc)=>{
             //});
+
+            GridView1.DataSource = null;
             MongoCursor<Account> gridsource;
             if (filter == null)
-                gridsource = _collection.FindAll().SetLimit(rowsPerPage);
+            {
+                gridsource = _collection.FindAllAs<Account>().SetLimit(rowsPerPage);
+                if (_collection.Count() > rowsPerPage)
+                    displayNavBtn(true);
+                else
+                    displayNavBtn(false);
+                totalPages = (int)Math.Ceiling((decimal)_collection.Count() / rowsPerPage);
+            }
             else
-                gridsource = _collection.Find(filter);
-
-            GridView1.DataSource = gridsource;
-            GridView1.DataBind();
-          
+            {
+                Session["filterstring"] = filter;
+                gridsource = _collection.Find(filter).SetLimit(rowsPerPage);
+                if (gridsource.Count() > rowsPerPage)
+                    displayNavBtn(true);
+                else
+                    displayNavBtn(false);
+                totalPages = (int)Math.Ceiling((decimal)gridsource.Count() / rowsPerPage);
+            }
+            resetInfo();
             return gridsource;
+        }
+
+        private void resetInfo()
+        {
+            lbl_cp.Text = "1";
+            ViewState["currentPage"] = 0;
+            ViewState["totalpage"] = totalPages;
+            Session["filterstring"] = null; 
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -134,31 +178,28 @@ namespace reviewportal
             else if (sortfield == "rvs")
                 sortfield = "review";
 
-            if (ViewState[e.SortExpression]==null)
+            if (ViewState[sortfield] == null)
             {
-                ViewState.Add(e.SortExpression, "Asc");
+                ViewState.Add(sortfield, "Asc");
             }
             else
             {
-                if (ViewState[e.SortExpression].ToString() == "Asc")
-                    ViewState[e.SortExpression] = "Desc";
+                if (ViewState[sortfield].ToString() == "Asc")
+                    ViewState[sortfield] = "Desc";
                 else
-                    ViewState[e.SortExpression] = "Asc";
+                    ViewState[sortfield] = "Asc";
             }
-            if (ViewState[e.SortExpression].ToString()=="Asc")
+            if (ViewState[sortfield].ToString() == "Asc")
             {
                 GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
-                //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
-                //GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Ascending(sortfield)).SetLimit(rowsPerPage);
             }
             else
             {
                 GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
-                //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
-                //GridView1.DataSource = _collection.FindAll().SetSortOrder(SortBy.Descending(sortfield)).SetLimit(rowsPerPage);
             }
-                
             GridView1.DataBind();
+            ViewState["sortdata"] = sortfield;
+            resetInfo();
         }
 
         protected void TreeView1_SelectedNodeChanged(object sender, EventArgs e)
@@ -166,11 +207,11 @@ namespace reviewportal
             string val = (sender as TreeView).SelectedValue.Trim();
             if (val == "AS")
             {
-                Session["gridsource"] =  doFilter();
+                Session["gridsource"] = doFilter();
             }
             else if (val == "SVSPR")
             {
-                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn","Canada#18"),Query.Matches("createdate","2016-08-07")));
+                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn", "Canada#18"), Query.Matches("createdate", "2016-08-07")));
             }
             else if (val == "RO")
             {
@@ -180,6 +221,76 @@ namespace reviewportal
             {
                 Session["gridsource"] = doFilter(Query.EQ("vpn", "Canada#26"));
             }
+            GridView1.DataSource = Session["gridsource"];
+            GridView1.DataBind();
+        }
+
+        private void displayNavBtn(bool show)
+        {
+            if (show)
+            {
+                btn_n.Visible = true;
+                btn_nn.Visible = true;
+                btn_p.Visible = true;
+                btn_pp.Visible = true;
+                lbl_cp.Visible = true;
+            }
+            else
+            {
+                btn_n.Visible = false;
+                btn_nn.Visible = false;
+                btn_p.Visible = false;
+                btn_pp.Visible = false;
+                lbl_cp.Visible = false;
+            }
+        }
+
+        protected void nav_btn_click(object sender, EventArgs e)
+        {
+            switch ((sender as LinkButton).CommandName)
+            {
+                case "first":
+                    currPage = 0;
+                    break;
+                case "next":
+                    if(currPage != totalPages-1)
+                       currPage++;
+                    break;
+                case "previous":
+                    if (currPage != 0)
+                        currPage--;
+                    break;
+                case "last":
+                        currPage = totalPages - 1;
+                    break;
+            }
+            GridView1.DataSource = null;
+
+            var _cussor = Session["gridsource"] as MongoCursor<Account>;
+            if (Session["filterstring"] != null)
+                _cussor = _collection.FindAs<Account>(Session["filterstring"] as IMongoQuery);
+
+            if (ViewState["sortdata"] == null)
+            {
+                //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                //GridView1.DataSource = _cussor.Skip(currPage * rowsPerPage).Take(rowsPerPage);
+            }
+            else
+            {
+                if (ViewState[ViewState["sortdata"].ToString()].ToString() == "Asc")
+                {
+                    GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().SetSortOrder(SortBy.Ascending( ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                }
+                else
+                {
+                    GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().SetSortOrder(SortBy.Descending(ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                }
+            }
+
+            ViewState["currentPage"] = currPage;
+            lbl_cp.Text = (currPage + 1).ToString();
+            GridView1.DataBind();
         }
     }
 }

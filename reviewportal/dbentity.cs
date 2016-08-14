@@ -6,6 +6,7 @@ using MongoDB.Bson;
 
 namespace reviewportal
 {
+    [Serializable]
     public class Account
     {
         public BsonObjectId id { get; }
@@ -21,7 +22,7 @@ namespace reviewportal
 
         public string createdate { get; set; } = "";
     }
-
+    [Serializable]
     public class Purchase
     {
         public string pdate { get; set; } = "";
@@ -30,7 +31,7 @@ namespace reviewportal
         public string pitem { get; set; } = "";
         public string pcardno { get; set; } = "";
     }
-
+    [Serializable]
     public class Review
     {
         public string ritem { get; set; } = "";
@@ -39,7 +40,7 @@ namespace reviewportal
         public string status { get; set; } = "";
         public string reviewer { get; set; } = "";
     }
-
+    [Serializable]
     public class Cards
     {
         public BsonObjectId _id { get; } 

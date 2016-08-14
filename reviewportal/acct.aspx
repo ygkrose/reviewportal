@@ -91,6 +91,7 @@
                     </asp:TreeNode>
                     <asp:TreeNode Text="Review Outcome" Value="RO"></asp:TreeNode>
                 </Nodes>
+                <SelectedNodeStyle BackColor="#CCFF33" />
             </asp:TreeView>
 
         </div>
@@ -112,42 +113,24 @@
                 </Columns>
                 <EditRowStyle Wrap="False" />
                 <HeaderStyle BackColor="#CCCCFF" Wrap="False" />
+                <PagerSettings Mode="NextPreviousFirstLast" />
                 <RowStyle Wrap="False" />
             </asp:GridView>
 
+            <asp:LinkButton ID="btn_pp" runat="server" CommandName="first" OnClick="nav_btn_click" Visible="False">&lt;&lt;</asp:LinkButton>
+&nbsp;
+            <asp:LinkButton ID="btn_p" runat="server" CommandName="previous" OnClick="nav_btn_click" Visible="False">&lt;</asp:LinkButton>
+&nbsp;<asp:Label ID="lbl_cp" runat="server" Text="#" Visible="False"></asp:Label>
+&nbsp;<asp:LinkButton ID="btn_n" runat="server" CommandName="next" OnClick="nav_btn_click" Visible="False">&gt;</asp:LinkButton>
+&nbsp;
+            <asp:LinkButton ID="btn_nn" runat="server" CommandName="last" OnClick="nav_btn_click" Visible="False">&gt;&gt;</asp:LinkButton>
+
         </div>
         <div id="popup" style="display: none">
-<%--            <asp:GridView runat="server" ID="grd" AutoGenerateColumns="false"
-                Style="margin-bottom: 35px" Width="550px">
-                <Columns>
-                    <asp:TemplateField HeaderText="Email">
-                        <ItemTemplate>
-                            <asp:Label ID="lblEMail" Text='<%#Eval("id") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Review ASIN">
-                        <ItemTemplate>
-                            <asp:Label ID="lblASIN" Text='<%#Eval("FirstName") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Review Date">
-                        <ItemTemplate>
-                            <asp:Label ID="lblDate" Text='<%#Eval("LastName") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Review Type">
-                        <ItemTemplate>
-                            <asp:Label ID="lblType" Text='<%#Eval("Address") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Review Status">
-                        <ItemTemplate>
-                            <asp:Label ID="lblSts" Text='<%#Eval("Address") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                </Columns>
-            </asp:GridView>--%>
+         
         </div>
+        <p>
+            &nbsp;</p>
     </form>
 </body>
 </html>
