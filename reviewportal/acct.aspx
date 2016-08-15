@@ -72,8 +72,10 @@
             $('<td></td>').text(_rows[i].status).appendTo(_row);
             //$('<td></td>').text(rows[i].rdate).appendTo(_row);
         }
+        
         //console.log("TTTTT:" + mytable.html());
         mytable.appendTo("#popup");
+        $('<div>cr:Customer Review, pr:Purchase Review</div>').appendTo("#popup");
     }
 </script>
 </head>
@@ -124,13 +126,11 @@
 &nbsp;<asp:LinkButton ID="btn_n" runat="server" CommandName="next" OnClick="nav_btn_click" Visible="False">&gt;</asp:LinkButton>
 &nbsp;
             <asp:LinkButton ID="btn_nn" runat="server" CommandName="last" OnClick="nav_btn_click" Visible="False">&gt;&gt;</asp:LinkButton>
-
+            <div id="msgdesc" style="text-align:left" runat="server"></div>
         </div>
         <div id="popup" style="display: none">
          
         </div>
-        <p>
-            &nbsp;</p>
     </form>
-</body>
+        </body>
 </html>

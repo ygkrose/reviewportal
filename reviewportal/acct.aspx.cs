@@ -28,7 +28,10 @@ namespace reviewportal
         int totalPages = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            ViewState["desc"] = "<b>Less5:</b>purchase amount less than $5，can't write review.<br/>"
+                + "<b>PayError:</b>Amazon require us to update card info.<br/>"
+                + "<font color=red>Blocked</font>:Can't login due to card purchase times or else..<br/>"
+                + "<b>Ready:</b>Account can write review.<br/>";
             //#if DEBUG
             //#else
             if (Session["valid"] == null)
@@ -46,6 +49,7 @@ namespace reviewportal
             }
             else
             {
+                msgdesc.Controls.Add(new LiteralControl(ViewState["desc"].ToString()));
                 if (ViewState["cardstring"] != null)
                 {
                     //_collection = Session["main_collection"] as MongoCollection<Account>;
@@ -225,6 +229,8 @@ namespace reviewportal
             {
                 Session["gridsource"] = doFilter(Query.EQ("vpn", "Canada#26"));
             }
+
+            
             GridView1.DataSource = Session["gridsource"];
             GridView1.DataBind();
         }
