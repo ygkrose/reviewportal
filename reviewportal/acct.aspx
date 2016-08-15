@@ -95,14 +95,14 @@
             </asp:TreeView>
 
         </div>
-        <div style="float:left; width: 726px;" padding: 10px">
+        <div style="float:left; width: 726px;" padding:"10px">
 
             <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" OnRowDataBound="GridView1_RowDataBound" AllowSorting="True" OnSorting="GridView1_Sorting" PageSize="20" BorderStyle="Solid">
                 <Columns>
                     <asp:BoundField DataField="email" HeaderText="Email" SortExpression="email" />
                     <asp:BoundField DataField="status" HeaderText="Status" SortExpression="status" />
                     <asp:BoundField HeaderText="PWD" />
-                    <asp:BoundField HeaderText="Purchase Date" SortExpression="pdate" DataFormatString="{0:yyyy/MM/dd HH:mm:ss} " HtmlEncode="False" />
+                    <asp:BoundField HeaderText="Purchase Date" SortExpression="pdate" HtmlEncode="False" />
                     <asp:BoundField HeaderText="Purchase ASIN" SortExpression="asin" />
                     <asp:BoundField HeaderText="Purchase TEL" SortExpression="tel" />
                     <asp:BoundField HeaderText="Credit Card" SortExpression="pcard"><ItemStyle HorizontalAlign="Center"></ItemStyle></asp:BoundField>
