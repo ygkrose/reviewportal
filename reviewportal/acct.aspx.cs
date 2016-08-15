@@ -141,10 +141,10 @@ namespace reviewportal
                     e.Row.Cells[1].ForeColor = System.Drawing.Color.Red;
                 }
                 e.Row.Cells[2].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2) + "...";
-                if (!string.IsNullOrEmpty(((Account)e.Row.DataItem).purchase.pdate))
-                    e.Row.Cells[3].Text =Convert.ToDateTime(((Account)e.Row.DataItem).purchase.pdate, new CultureInfo("zh-TW")).ToString("yyyy/MM/dd HH:mm:ss");
+                if (((Account)e.Row.DataItem).purchase.pdate.Date.ToString("yyyyMMdd")=="10000101")
+                    e.Row.Cells[3].Text = ""; 
                 else
-                    e.Row.Cells[3].Text = "";
+                    e.Row.Cells[3].Text = Convert.ToDateTime(((Account)e.Row.DataItem).purchase.pdate, new CultureInfo("zh-TW")).ToString("yyyy/MM/dd HH:mm:ss");
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
                 e.Row.Cells[5].Text = ((Account)e.Row.DataItem).purchase.ptel;
                 string _card = ((Account)e.Row.DataItem).purchase.pcardno;
@@ -164,7 +164,8 @@ namespace reviewportal
                 if (((Account)e.Row.DataItem).review.Count > 0)
                 {
                     //hl.Attributes.Add("rvdata", ((Account)e.Row.DataItem).review.ToJson());
-                    hl.Attributes.Add("onclick", "openReview('" + ((Account)e.Row.DataItem).email + "','" + ((Account)e.Row.DataItem).review.ToJson() + "')");
+                    var jsonWriterSettings = new JsonWriterSettings { OutputMode = JsonOutputMode.Strict };
+                    hl.Attributes.Add("onclick", "openReview('" + ((Account)e.Row.DataItem).email + "','" + ((Account)e.Row.DataItem).review.ToJson(jsonWriterSettings) + "')");
                     hl.NavigateUrl = "#";
                 }
                 e.Row.Cells[7].Controls.Add(hl);
@@ -219,7 +220,7 @@ namespace reviewportal
             }
             else if (val == "SVSPR")
             {
-                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn", "Canada#18"), Query.Matches("createdate", "2016-08-07")));
+                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn", "Canada#18"), Query.GTE("createdate", BsonDateTime.Create("2016-08-07T00:00:00")),Query.LT("createdate", BsonDateTime.Create("2016-08-08T00:00:00"))));
             }
             else if (val == "RO")
             {
@@ -227,7 +228,7 @@ namespace reviewportal
             }
             else if (val == "SO5")
             {
-                Session["gridsource"] = doFilter(Query.EQ("vpn", "Canada#26"));
+                Session["gridsource"] = doFilter(Query.And(Query.EQ("vpn", "Canada#26"),Query.GTE("createdate", BsonDateTime.Create("2016-08-12T00:00:00")),Query.LT("createdate", BsonDateTime.Create("2016-08-13T00:00:00")) ));
             }
 
             

@@ -20,12 +20,12 @@ namespace reviewportal
 
         public string vpn { get; set; } = "";
 
-        public string createdate { get; set; } = "";
+        public DateTime createdate { get; set; }
     }
     [Serializable]
     public class Purchase
     {
-        public string pdate { get; set; } = "";
+        public DateTime pdate { get; set; } 
         public string pname { get; set; } = "";
         public string ptel { get; set; } = "";
         public string pitem { get; set; } = "";
@@ -35,7 +35,7 @@ namespace reviewportal
     public class Review
     {
         public string ritem { get; set; } = "";
-        public string rdate { get; set; } = "";
+        public DateTime rdate { get; set; } 
         public string rtype { get; set; } = "";
         public string status { get; set; } = "";
         public string reviewer { get; set; } = "";

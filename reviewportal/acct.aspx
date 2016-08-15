@@ -75,7 +75,7 @@
         
         //console.log("TTTTT:" + mytable.html());
         mytable.appendTo("#popup");
-        $('<div>cr:Customer Review, pr:Purchase Review</div>').appendTo("#popup");
+        $('<div>cr:Customer Review, vp:Verify Purchase</div>').appendTo("#popup");
     }
 </script>
 </head>
