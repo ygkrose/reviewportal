@@ -12,6 +12,7 @@ using System.Configuration;
 using MongoDB.Driver.Builders;
 using System.Collections;
 using MongoDB.Bson.IO;
+using System.Globalization;
 
 namespace reviewportal
 {
@@ -137,7 +138,7 @@ namespace reviewportal
                 }
                 e.Row.Cells[2].Text = ((Account)e.Row.DataItem).pwd.Substring(0, 2) + "...";
                 if (!string.IsNullOrEmpty(((Account)e.Row.DataItem).purchase.pdate))
-                    e.Row.Cells[3].Text = Convert.ToDateTime(((Account)e.Row.DataItem).purchase.pdate).ToString("yyyy/MM/dd HH:mm:ss");
+                    e.Row.Cells[3].Text =Convert.ToDateTime(((Account)e.Row.DataItem).purchase.pdate, new CultureInfo("zh-TW")).ToString("yyyy/MM/dd HH:mm:ss");
                 else
                     e.Row.Cells[3].Text = "";
                 e.Row.Cells[4].Text = ((Account)e.Row.DataItem).purchase.pitem;
