@@ -66,7 +66,8 @@
         for (var i = 0; i < _rows.length; i++) {
             //var row = $('<tr></tr>').attr({ class: ["class1", "class2", "class3"].join(' ') }).appendTo(mytable);
             var _row = $('<tr></tr>').appendTo(mytable);
-            $('<td></td>').text(_rows[i].rdate).appendTo(_row);
+            var _date = new Date(_rows[i].rdate.$date);
+            $('<td></td>').text(_date.getFullYear()+'/'+(_date.getMonth()+1) +'/'+_date.getDate()+' '+_date.getHours()+':'+_date.getMinutes()).appendTo(_row);
             $('<td></td>').text(_rows[i].ritem).appendTo(_row);
             $('<td></td>').text(_rows[i].rtype).appendTo(_row);
             $('<td></td>').text(_rows[i].status).appendTo(_row);
