@@ -1,4 +1,6 @@
-﻿using System;
+﻿using reviewportal.Module;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,9 +18,11 @@ namespace reviewportal.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public DataTableResultModel Get(DateTime id)
         {
-            return "value";
+            rvService svc = new rvService();
+            return svc.Read(new DataTableParamModel());
+
         }
 
         // POST api/values
@@ -36,4 +40,6 @@ namespace reviewportal.Controllers
         {
         }
     }
+
+
 }
