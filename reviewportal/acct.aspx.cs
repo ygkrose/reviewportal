@@ -75,7 +75,7 @@ namespace reviewportal
                 _client = new MongoClient(ConfigurationManager.AppSettings["MONGOLAB_URI"].ToString());
                 //_client = new MongoClient("mongodb://appharbor_f5h26gwv:b0i898m2k4kcp09l6btpj3g9fb@ds139735.mlab.com:39735/appharbor_f5h26gwv");
                 _database = _client.GetServer().GetDatabase("appharbor_f5h26gwv");
-                _collection = _database.GetCollection<Account>("_account");
+                _collection = _database.GetCollection<Account>("account");
             }
             _collect_Card = _database.GetCollection<Cards>("card");
 
@@ -216,7 +216,7 @@ namespace reviewportal
             string val = (sender as TreeView).SelectedValue.Trim();
             if (val == "AS")
             {
-                Session["gridsource"] = doFilter();
+                Session["gridsource"] = doFilter(Query.NE("status","Created"));
             }
             else if (val == "SVSPR")
             {
