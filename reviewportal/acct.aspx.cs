@@ -129,7 +129,7 @@ namespace reviewportal
             lbl_cp.Text = "1";
             ViewState["currentPage"] = 0;
             ViewState["totalpage"] = totalPages;
-            Session["filterstring"] = null; 
+            //Session["filterstring"] = null; 
         }
 
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -284,18 +284,18 @@ namespace reviewportal
             if (ViewState["sortdata"] == null)
             {
                 //GridView1.DataSource = ((MongoCursor<Account>)Session["gridsource"]).Clone<Account>().Skip(currPage * rowsPerPage).Take(rowsPerPage);
-                GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                GridView1.DataSource = _cussor.Skip(currPage * rowsPerPage).Take(rowsPerPage);
                 //GridView1.DataSource = _cussor.Skip(currPage * rowsPerPage).Take(rowsPerPage);
             }
             else
             {
                 if (ViewState[ViewState["sortdata"].ToString()].ToString() == "Asc")
                 {
-                    GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().SetSortOrder(SortBy.Ascending( ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                    GridView1.DataSource = _cussor.SetSortOrder(SortBy.Ascending( ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
                 }
                 else
                 {
-                    GridView1.DataSource = _cussor.Collection.FindAllAs<Account>().SetSortOrder(SortBy.Descending(ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
+                    GridView1.DataSource = _cussor.SetSortOrder(SortBy.Descending(ViewState["sortdata"].ToString())).Skip(currPage * rowsPerPage).Take(rowsPerPage);
                 }
             }
 
