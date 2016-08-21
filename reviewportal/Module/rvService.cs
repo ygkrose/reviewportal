@@ -1,85 +1,95 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Driver;
+using MongoDB.Driver.Builders;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace reviewportal.Module
 {
     public class rvService
     {
-        public DataTableResultModel Read(DataTableParamModel InputData)
+        MongoCollection _collection;
+        public rvService(MongoCollection collection)
         {
-            DataTableResultModel OutputData = new DataTableResultModel();
-            //Expression > System.Web.Mvc.Filter = x => x.Display == false;
-
-            ///查詢的邏輯
-
-            OutputData.iTotalDisplayRecords = //計算共顯示幾筆資料
-            OutputData.iTotalRecords = OutputData.iTotalRecords =
-                (int)Math.Ceiling((Double)OutputData.iTotalDisplayRecords / (Double)InputData.iDisplayLength);//總共有幾頁
-            OutputData.sEcho = HttpContext.Current.Request.QueryString["sEcho"];
-            return OutputData;
+            _collection = collection;
         }
-    }
+        public List<BsonDocument> Read(DataTableParamModel InputData)
+        {
+            //var rst = _collection.FindAs<Account>(Query.And(Query.GTE("review.rdate", InputData.sDate),Query.SizeGreaterThan("review",0)));
+            var rst = _collection.FindAs<Account>(Query.SizeGreaterThan("review", 0));
+            // .SetFields(Fields.Include(new string[] {"","","","","","","" }));
+            List<BsonDocument> bdoc = new List<BsonDocument>();
+            foreach (var row in rst)
+            {
+                foreach (var rv in row.review)
+                {
+                    bdoc.Add(geneBSON(row, rv));
+                }
+            }
+            
+            return bdoc;
+        }
 
-    public class DataTableResultModel
-    {
-        //相關參數
-        public String sEcho { get; set; }
-        public int iTotalRecords { get; set; }
-        public int iTotalDisplayRecords { get; set; }
-        //回傳資料
-        public IEnumerable aaData { get; set; }
+        private BsonDocument geneBSON(Account acc,Review rv)
+        {
+            return new BsonDocument()
+            {
+                { "rvitem" , rv.ritem.ToString().Trim() },
+                { "seller" , rv.seller.ToString().Trim() },
+                { "rvtime" , rv.rdate.ToString("yyyy/MM/dd HH:mm:ss")},
+                { "rvemail" , acc.email.ToString().Trim() },
+                { "rvtype" , rv.rtype.ToString().Trim()=="vp"?"Verified Purchase":"Customer Review" },
+                { "rvstar" , rv.stars.ToString().Trim() },
+                { "status" , rv.status.ToString().Trim() }
+            };
+        }
     }
 
     public class DataTableParamModel
     {
         /// 
-
         /// 請求的次數序號
         /// 
 
         public string sEcho { get; set; }
 
         /// 
-
         /// 查詢用的資料
         /// 
 
-        public string sSearch { get; set; }
+        public DateTime sDate { get; set; }
 
         /// 
-
         /// 一頁要顯示幾筆資料
         /// 
 
         public int iDisplayLength { get; set; }
 
         /// 
-
         /// 第一筆資料的位置
         /// 
 
         public int iDisplayStart { get; set; }
 
         /// 
-
         /// 在表中的列數
         /// 
 
         public int iColumns { get; set; }
 
         /// 
-
         /// 用哪一個欄位進行排序
         /// 
 
         public int iSortingCols { get; set; }
 
         /// 
-
         /// 欄位的名稱
         /// 
 

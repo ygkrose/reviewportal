@@ -39,6 +39,9 @@ namespace reviewportal
         public string rtype { get; set; } = "";
         public string status { get; set; } = "";
         public string reviewer { get; set; } = "";
+        public string seller { get; set; } = "";
+        public int stars { get; set; } = 0;
+
     }
     [Serializable]
     public class Cards
