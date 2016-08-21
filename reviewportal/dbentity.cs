@@ -21,6 +21,7 @@ namespace reviewportal
         public string vpn { get; set; } = "";
 
         public DateTime createdate { get; set; }
+        public DateTime modtime { get; set; }
     }
     [Serializable]
     public class Purchase
