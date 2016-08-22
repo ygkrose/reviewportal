@@ -93,6 +93,7 @@
                         <asp:TreeNode Text="2.Shop over $5" Value="SO5"></asp:TreeNode>
                     </asp:TreeNode>
                     <asp:TreeNode Text="Review Outcome" Value="RO"></asp:TreeNode>
+                    <asp:TreeNode NavigateUrl="~/review.html" Target="_blank" Text="Review Summary" Value="RS"></asp:TreeNode>
                 </Nodes>
                 <SelectedNodeStyle BackColor="#CCFF33" />
             </asp:TreeView>
